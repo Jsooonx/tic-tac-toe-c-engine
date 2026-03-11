@@ -15,5 +15,9 @@ A console-based Tic Tac Toe game implemented in C that demonstrates basic game l
 - Game loop design
 - Basic algorithmic thinking
 
+## Output
+
+<img src="assets/tictactoedemo.png" width="700">
+
 ## Technologies
 - C
