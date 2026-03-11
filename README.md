@@ -17,7 +17,7 @@ A console-based Tic Tac Toe game implemented in C that demonstrates basic game l
 
 ## Output
 
-<img src="assets/tictactoedemo.png" width="700">
+<img src="assets/tictactoedemo.gif" width="700">
 
 ## Technologies
 - C
