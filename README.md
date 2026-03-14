@@ -21,3 +21,6 @@ A console-based Tic Tac Toe game implemented in C that demonstrates basic game l
 
 ## Technologies
 - C
+
+## Learning Focus
+This project was built to practice core C programming concepts such as arrays, control flow, modular functions, and game-state management.
