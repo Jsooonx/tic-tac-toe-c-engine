@@ -5,7 +5,7 @@
 
 char board[3][3];
 
-void resetboard() {
+void resetBoard() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             board[i][j] = ' ';
@@ -13,7 +13,7 @@ void resetboard() {
     }
 }
 
-void showboard() {
+void showBoard() {
     printf("\n");
     printf("  1  2  3\n");
     for (int i = 0; i < 3; i++) {
@@ -26,24 +26,27 @@ void showboard() {
     printf("\n");
 }
 
-int cekmenang(char simbol) {
+int checkWin(char symbol) {
     for (int i = 0; i < 3; i++) {
-        if (board[i][0] == simbol && board[i][1] == simbol && board[i][2] == simbol)
-            return 1;
-    }
-    for (int i = 0; i < 3; i++) {
-        if (board[0][i] == simbol && board[1][i] == simbol && board[2][i] == simbol)
+        if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol)
             return 1;
     }
 
-    if (board[0][0] == simbol && board[1][1] == simbol && board[2][2] == simbol)
+    for (int i = 0; i < 3; i++) {
+        if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)
+            return 1;
+    }
+
+    if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol)
         return 1;
-    if (board[0][2] == simbol && board[1][1] == simbol && board[2][0] == simbol)
+
+    if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)
         return 1;
+
     return 0;
-} 
+}
 
-int cekfull() {
+int checkFull() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (board[i][j] == ' ')
@@ -53,95 +56,99 @@ int cekfull() {
     return 1;
 }
 
-void gerakanplayer(char simbol) {
-    int b, k;
+void playerMove(char symbol) {
+    int row, col;
 
     while (1) {
-        printf("Masukkan baris/bagian horizontal (1-3): ");
-        scanf("%d", &b);
-        printf("Masukkan kolom/bagian vertikal (1-3): ");
-        scanf("%d", &k);
+        printf("Enter row (1-3): ");
+        scanf("%d", &row);
+        printf("Enter column (1-3): ");
+        scanf("%d", &col);
 
-        b--;
-        k--;
+        row--;
+        col--;
 
-        if (b >= 0 && b < 3 && k >= 0 && k < 3 && board [b][k] == ' ') {
-            board[b][k] = simbol;
+        if (row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == ' ') {
+            board[row][col] = symbol;
             break;
         } else {
-            printf("Pilihan tidak valid, coba lagi.\n");
+            printf("Invalid move, please try again.\n");
         }
     }
 }
 
-void gerakancomp(char simbol) {
+void computerMove(char symbol) {
     printf("Computer is thinking...\n");
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (board[i][j] == ' ') {
-                board[i][j] = simbol;
-                printf("Computer memilih baris %d dan kolom %d\n", i + 1, j + 1);
+                board[i][j] = symbol;
+                printf("Computer chose row %d and column %d\n", i + 1, j + 1);
                 return;
             }
         }
     }
 }
 
-void maingame(int mode) {
-    resetboard();
-    char giliran = 'X';
+void mainGame(int mode) {
+    resetBoard();
+    char turn = 'X';
 
-    char namaX[20] = "Player 1";
-    char namaO[20];
+    char nameX[20] = "Player 1";
+    char nameO[20];
 
     if (mode == 1) {
-        strcpy(namaO, "Player 2");
+        strcpy(nameO, "Player 2");
     } else {
-        strcpy(namaO, "Computer");
+        strcpy(nameO, "Computer");
     }
 
-    printf("\n=== GAME DIMULAI ===\n");
+    printf("\n=== GAME STARTED ===\n");
     printf("X = Player 1\n");
     if (mode == 1)
         printf("O = Player 2\n\n");
     else
         printf("O = Computer\n\n");
-    while (1) {
-        showboard();
 
-        if (giliran == 'X') {
-            printf("Giliran X:\n");
-            gerakanplayer('X');
+    while (1) {
+        showBoard();
+
+        if (turn == 'X') {
+            printf("X's turn:\n");
+            playerMove('X');
         } else {
-            if (mode == 1){
-                printf("Giliran O: \n");
-                gerakanplayer('O');
+            if (mode == 1) {
+                printf("O's turn:\n");
+                playerMove('O');
             } else {
-                gerakancomp('O');
+                computerMove('O');
             }
         }
-        if (cekmenang(giliran)) {
-            showboard();
-            if (giliran == 'X') {
-                printf("SELAMAT! %s (X) MENANG!\n\n", namaX);
+
+        if (checkWin(turn)) {
+            showBoard();
+            if (turn == 'X') {
+                printf("CONGRATULATIONS! %s (X) WINS!\n\n", nameX);
             } else {
-                printf("SELAMAT! %s (O) MENANG!\n\n", namaO);
+                printf("CONGRATULATIONS! %s (O) WINS!\n\n", nameO);
             }
             break;
         }
-        if (cekfull()) {
-            showboard();
-            printf("SERI! Tidak ada pemenang.\n\n");
+
+        if (checkFull()) {
+            showBoard();
+            printf("DRAW! There is no winner.\n\n");
             break;
         }
-        giliran = (giliran == 'X') ? 'O' : 'X';
+
+        turn = (turn == 'X') ? 'O' : 'X';
     }
 }
 
 int main() {
-    int pilihan;
-    char mainlagi;
+    int choice;
+    char playAgain;
 
     srand(time(0));
 
@@ -150,22 +157,23 @@ int main() {
         printf("===== TIC TAC TOE =====\n");
         printf("1. Player vs Player (PvP)\n");
         printf("2. Player vs Computer (PvE)\n");
-        printf("3. Keluar\n");
+        printf("3. Exit\n");
         printf("=======================\n");
-        printf("Pilih: ");
-        scanf("%d", &pilihan);
+        printf("Choose: ");
+        scanf("%d", &choice);
 
-        if (pilihan == 1 || pilihan == 2) {
-            maingame(pilihan);
-            printf("Main lagi? (y/n): ");
-            scanf(" %c", &mainlagi);
-        } else if (pilihan == 3) {
-            printf("Terima kasih sudah bermain!\n");
+        if (choice == 1 || choice == 2) {
+            mainGame(choice);
+            printf("Play again? (y/n): ");
+            scanf(" %c", &playAgain);
+        } else if (choice == 3) {
+            printf("Thank you for playing!\n");
             break;
         } else {
-            printf("Pilihan tidak valid!\n");
-            mainlagi = 'y';
+            printf("Invalid choice!\n");
+            playAgain = 'y';
         }
-    } while (mainlagi == 'y' || mainlagi == 'Y');
+    } while (playAgain == 'y' || playAgain == 'Y');
+
     return 0;
 }
